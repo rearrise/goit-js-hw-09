@@ -6,6 +6,8 @@ const formData = {
   message: '',
 };
 
+initForm();
+
 form.addEventListener('input', e => {
   formData.email = form.elements.email.value;
   formData.message = form.elements.message.value;
@@ -22,7 +24,7 @@ function initForm() {
     form.elements.email.value = formData.email;
     form.elements.message.value = formData.message;
   }
-};
+}
 
 form.addEventListener('submit', e => {
   e.preventDefault();
@@ -33,7 +35,7 @@ form.addEventListener('submit', e => {
   }
   localStorage.removeItem(STORAGE_KEY);
   console.log(formData);
-  
+
   formData.email = '';
   formData.message = '';
   form.reset();
