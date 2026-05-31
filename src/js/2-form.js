@@ -1,38 +1,41 @@
 const STORAGE_KEY = 'feedback-form-state';
-const form = document.querySelector('.js-form');
-const textarea = form.querySelector('textarea');
+const form = document.querySelector('.feedback-form');
+
+const formData = {
+  email: '',
+  message: '',
+};
 
 form.addEventListener('input', e => {
-  const input = new FormData(form);
-  const data = {
-    email: input.get('email'),
-    message: input.get('message'),
-  };
-  saveLS(STORAGE_KEY, data);
+  formData.email = form.elements.email.value;
+  formData.message = form.elements.message.value;
+  saveLS(STORAGE_KEY, formData);
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  const data = loadLS(STORAGE_KEY);
-  if (data) {
-    form.elements.email.value = data.email;
-    form.elements.message.value = data.message;
+function initForm() {
+  const saved = loadLS(STORAGE_KEY);
+
+  if (saved) {
+    formData.email = saved.email || '';
+    formData.message = saved.message || '';
+
+    form.elements.email.value = formData.email;
+    form.elements.message.value = formData.message;
   }
-});
+};
 
 form.addEventListener('submit', e => {
   e.preventDefault();
 
-  const input = new FormData(form);
-  const data = {
-    email: input.get('email'),
-    message: input.get('message'),
-  };
-  console.log(data);
-  if (data.email === '' || data.message === '') {
+  if (!formData.email || !formData.message) {
     alert('Fill please all fields');
     return;
   }
   localStorage.removeItem(STORAGE_KEY);
+  console.log(formData);
+  
+  formData.email = '';
+  formData.message = '';
   form.reset();
 });
 
